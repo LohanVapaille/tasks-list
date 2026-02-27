@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
@@ -13,6 +13,10 @@ function App() {
       return [];
     }
   });
+
+  useEffect(() => {
+    localStorage.setItem("mes-notes", JSON.stringify(notes));
+  }, [notes]);
 
   const clearAllNotes = () => {
     setNotes([]);
