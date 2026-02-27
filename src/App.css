@@ -1,0 +1,83 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--bleu-clair);
+  color: var(--text-color);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.app {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --bleu-clair: #adf5ff;
+  --rouge: #f47474;
+  width: 85%;
+  margin: auto;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  border-radius: 20px;
+}
+
+.app.dark {
+  --bg-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --bleu-clair: #03353b;
+  --rouge: #3f0606;
+}
+
+.error {
+  color: #ff4d4d;
+  font-size: 0.8rem;
+}
+
+.btndarkmode {
+  background-color: transparent;
+  border: 2px solid var(--text-color);
+  color: var(--text-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btndarkmode:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+.note-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.note-form input {
+  padding: 10px;
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.note-form button {
+  padding: 10px 20px;
+  background-color: var(--bleu-clair);
+  border: none;
+  color: var(--text-color);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-clear {
+  padding: 10px 20px;
+  background-color: var(--rouge);
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-clear:hover {
+  background-color: #ff4d4d;
+}

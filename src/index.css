@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgb(165, 165, 167);
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+main {
+  padding: 20px;
+}
