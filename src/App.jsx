@@ -1,79 +1,37 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Header from "./components/Header";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
+import AppProvider from "./context/AppContext";
+import useAppContext from "./context/useAppContext";
 import "./App.css";
 
-function App() {
-  const [notes, setNotes] = useState(() => {
-    const saved = localStorage.getItem("mes-notes");
-    if (saved) {
-      return JSON.parse(saved);
-    } else {
-      return [];
-    }
-  });
+const STORAGE_KEY = "mes-notes";
+
+function AppContent() {
+  const { notes, isDarkMode } = useAppContext();
 
   useEffect(() => {
-    localStorage.setItem("mes-notes", JSON.stringify(notes));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
   }, [notes]);
-
-  const clearAllNotes = () => {
-    setNotes([]);
-
-    localStorage.removeItem("mes-notes");
-  };
-
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Inverser l'état "fait / à faire"
-  const toggleComplete = (id) => {
-    const updatedNotes = notes.map((note) => {
-      if (note.id === id) {
-        return {
-          id: note.id,
-          text: note.text,
-          completed: !note.completed, // false devient true, ou l'inverse
-        };
-      } else {
-        return note;
-      }
-    });
-    setNotes(updatedNotes);
-  };
-
-  // Supprimer une seule note
-  const deleteNote = (id) => {
-    const updatedNotes = notes.filter((note) => note.id !== id);
-    setNotes(updatedNotes);
-  };
-
-  const addNote = (text) => {
-    const newNote = { id: Date.now(), text, completed: false };
-    setNotes([newNote, ...notes]);
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   return (
     <div className={`app ${isDarkMode ? "dark" : "light"}`}>
-      <Header
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleDarkMode}
-        clearAllNotes={clearAllNotes}
-      />
+      <Header />
 
       <main>
-        <NoteForm onAddNote={addNote} />
-        <NoteList
-          notes={notes}
-          onToggle={toggleComplete}
-          onDelete={deleteNote}
-        />
+        <NoteForm />
+        <NoteList />
       </main>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
   );
 }
 

@@ -1,4 +1,8 @@
-const NoteList = ({ notes, onToggle, onDelete }) => {
+import useAppContext from "../context/useAppContext";
+
+const NoteList = () => {
+  const { notes, toggleComplete, deleteNote } = useAppContext();
+
   if (notes.length === 0) {
     return <p className="empty-message">Votre liste de tâches est vide ! </p>;
   }
@@ -11,7 +15,7 @@ const NoteList = ({ notes, onToggle, onDelete }) => {
             <input
               type="checkbox"
               checked={note.completed}
-              onChange={() => onToggle(note.id)}
+              onChange={() => toggleComplete(note.id)}
             />
 
             {/* 2. Le Texte (barré si completed est true) */}
@@ -26,7 +30,7 @@ const NoteList = ({ notes, onToggle, onDelete }) => {
 
             {/* 3. Le bouton supprimer */}
             <button
-              onClick={() => onDelete(note.id)}
+              onClick={() => deleteNote(note.id)}
               style={{ color: "red", marginLeft: "auto" }}
             >
               X

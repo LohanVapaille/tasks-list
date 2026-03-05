@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
+import useAppContext from "../context/useAppContext";
 
-const NoteForm = ({ onAddNote }) => {
+const NoteForm = () => {
   const [content, setContent] = useState("");
   const inputRef = useRef(null);
+  const { addNote } = useAppContext();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -12,7 +14,7 @@ const NoteForm = ({ onAddNote }) => {
     e.preventDefault();
     if (content.length < 3) return;
 
-    onAddNote(content);
+    addNote(content);
     setContent("");
     inputRef.current.focus();
   };
