@@ -1,12 +1,10 @@
 import { useContext } from "react";
 import { AppContext } from "./appContextObject";
 
+// Hook custom pour centraliser l'accès au Context.
+// Avantage: importer une seule fonction au lieu de useContext + AppContext partout.
 const useAppContext = () => {
   const context = useContext(AppContext);
-
-  if (!context) {
-    throw new Error("useAppContext doit être utilisé dans AppProvider");
-  }
 
   return context;
 };

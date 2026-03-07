@@ -3,7 +3,9 @@ import useAppContext from "../context/useAppContext";
 
 const NoteForm = () => {
   const [content, setContent] = useState("");
+
   const inputRef = useRef(null);
+
   const { addNote } = useAppContext();
 
   useEffect(() => {
@@ -12,9 +14,11 @@ const NoteForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (content.length < 3) return;
 
     addNote(content);
+
     setContent("");
     inputRef.current.focus();
   };

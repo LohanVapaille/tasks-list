@@ -1,3 +1,4 @@
+/* Style de l'entête principal */
 header {
   display: flex;
   justify-content: space-between;
@@ -9,6 +10,8 @@ header {
   border-top-right-radius: 20px;
 }
 
+/* Conteneur racine de l'application */
+/* Ici on définit les variables CSS du thème clair par défaut. */
 .app {
   --bg-color: #ffffff;
   --text-color: #333333;
@@ -22,6 +25,7 @@ header {
   border-radius: 20px;
 }
 
+/* Variante sombre: on redéfinit uniquement les variables. */
 .app.dark {
   --bg-color: #1a1a1a;
   --text-color: #f0f0f0;
@@ -34,6 +38,7 @@ header {
   font-size: 0.8rem;
 }
 
+/* Bouton de changement de thème */
 .btndarkmode {
   background-color: transparent;
   border: 2px solid var(--text-color);
@@ -48,12 +53,14 @@ header {
   color: var(--bg-color);
 }
 
+/* Zone de saisie + bouton d'ajout */
 .note-form {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
 }
 
+/* Champ de texte de la note */
 .note-form input {
   padding: 10px;
 
@@ -61,6 +68,7 @@ header {
   border-radius: 5px;
 }
 
+/* Bouton Ajouter */
 .note-form button {
   padding: 10px 20px;
   background-color: var(--bleu-clair);
@@ -70,6 +78,7 @@ header {
   cursor: pointer;
 }
 
+/* Bouton de suppression globale */
 .btn-clear {
   padding: 10px 20px;
   background-color: var(--rouge);
@@ -78,6 +87,8 @@ header {
   border-radius: 5px;
   cursor: pointer;
 }
+
+/* Feedback visuel au survol du bouton de suppression */
 .btn-clear:hover {
   background-color: #ff4d4d;
 }

@@ -1,16 +1,41 @@
-# React + Vite
+# Projet semane5 (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application de liste de tâches (notes) avec:
 
-Currently, two official plugins are available:
+- ajout de note,
+- marquage terminé/non terminé,
+- suppression,
+- vidage complet,
+- mode clair/sombre,
+- sauvegarde locale via `localStorage`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Structure utile
 
-## React Compiler
+- `src/main.jsx` : point d'entrée React (montage dans `#root`).
+- `src/App.jsx` : compose l'app et persiste les notes dans `localStorage`.
+- `src/context/AppContext.jsx` : état global (`useReducer`) + actions + statistiques.
+- `src/context/useAppContext.js` : hook custom pour lire le context facilement.
+- `src/components/` : UI (`Header`, `NoteForm`, `NoteList`).
+- `src/App.css` et `src/index.css` : styles globaux et thème.
+- `vite.config.js` : config Vite + base GitHub Pages.
+- `eslint.config.js` : règles de qualité de code.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Flux de données (simple)
 
-## Expanding the ESLint configuration
+1. L'utilisateur interagit dans les composants.
+2. Les composants appellent une action du context (`addNote`, `toggleComplete`, etc.).
+3. Le reducer met à jour l'état global.
+4. React rerender l'UI avec le nouvel état.
+5. `App.jsx` sauvegarde automatiquement les notes dans `localStorage`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Scripts npm
+
+- `npm run dev` : lance le serveur de développement.
+- `npm run build` : construit la version production.
+- `npm run preview` : prévisualise le build.
+- `npm run lint` : vérifie les règles ESLint.
+- `npm run deploy` : publie `dist` sur GitHub Pages.
+
+## Note
+
+`package.json` est un fichier JSON pur, donc on ne peut pas y mettre des commentaires directement sans le casser. Les explications associées sont donc regroupées ici.

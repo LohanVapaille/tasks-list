@@ -6,9 +6,11 @@ import AppProvider from "./context/AppContext";
 import useAppContext from "./context/useAppContext";
 import "./App.css";
 
+// Clé unique utilisée pour sauvegarder/recharger les notes dans le navigateur.
 const STORAGE_KEY = "mes-notes";
 
 function AppContent() {
+  // Récupère l'état global partagé via le Context.
   const { notes, isDarkMode } = useAppContext();
 
   useEffect(() => {

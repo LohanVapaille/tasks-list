@@ -1,13 +1,16 @@
-import { useCallback, useMemo, useReducer } from "react";
+import { useReducer } from "react";
 import { AppContext } from "./appContextObject";
 
 const STORAGE_KEY = "mes-notes";
 
+// Fonction d'initialisation du state.
+// Elle est passée à useReducer pour éviter de relire localStorage à chaque rendu.
 const createInitialState = () => {
   const savedNotes = localStorage.getItem(STORAGE_KEY);
 
   if (savedNotes) {
     return {
+      // JSON.parse convertit la chaîne stockée en tableau d'objets JS.
       notes: JSON.parse(savedNotes),
       isDarkMode: false,
     };
@@ -19,6 +22,7 @@ const createInitialState = () => {
   };
 };
 
+// Le reducer centralise toutes les transitions d'état de l'application.
 const appReducer = (state, action) => {
   switch (action.type) {
     case "ADD_NOTE": {
@@ -35,6 +39,7 @@ const appReducer = (state, action) => {
     }
 
     case "TOGGLE_NOTE": {
+      // Inverse l'état completed de la note ciblée.
       return {
         ...state,
         notes: state.notes.map((note) => {
@@ -51,6 +56,7 @@ const appReducer = (state, action) => {
     }
 
     case "DELETE_NOTE": {
+      // Supprime la note ciblée en filtrant le tableau.
       return {
         ...state,
         notes: state.notes.filter((note) => note.id !== action.payload),
@@ -58,6 +64,7 @@ const appReducer = (state, action) => {
     }
 
     case "CLEAR_NOTES": {
+      // Vide complètement la liste.
       return {
         ...state,
         notes: [],
@@ -65,6 +72,7 @@ const appReducer = (state, action) => {
     }
 
     case "TOGGLE_DARK_MODE": {
+      // Bascule entre thème clair et sombre.
       return {
         ...state,
         isDarkMode: !state.isDarkMode,
@@ -83,36 +91,29 @@ const AppProvider = ({ children }) => {
     createInitialState,
   );
 
-  const addNote = useCallback(
-    (text) => {
-      dispatch({ type: "ADD_NOTE", payload: text });
-    },
-    [dispatch],
-  );
+  // Actions exposées au reste de l'app.
+  const addNote = (text) => {
+    dispatch({ type: "ADD_NOTE", payload: text });
+  };
 
-  const toggleComplete = useCallback(
-    (id) => {
-      dispatch({ type: "TOGGLE_NOTE", payload: id });
-    },
-    [dispatch],
-  );
+  const toggleComplete = (id) => {
+    dispatch({ type: "TOGGLE_NOTE", payload: id });
+  };
 
-  const deleteNote = useCallback(
-    (id) => {
-      dispatch({ type: "DELETE_NOTE", payload: id });
-    },
-    [dispatch],
-  );
+  const deleteNote = (id) => {
+    dispatch({ type: "DELETE_NOTE", payload: id });
+  };
 
-  const clearAllNotes = useCallback(() => {
+  const clearAllNotes = () => {
     dispatch({ type: "CLEAR_NOTES" });
-  }, [dispatch]);
+  };
 
-  const toggleDarkMode = useCallback(() => {
+  const toggleDarkMode = () => {
     dispatch({ type: "TOGGLE_DARK_MODE" });
-  }, [dispatch]);
+  };
 
-  const notesSummary = useMemo(() => {
+  // Calcul dérivé: statistiques affichées dans l'entête.
+  const notesSummary = (() => {
     const completed = state.notes.filter((note) => note.completed).length;
     const total = state.notes.length;
 
@@ -121,31 +122,21 @@ const AppProvider = ({ children }) => {
       completed,
       pending: total - completed,
     };
-  }, [state.notes]);
+  })();
 
-  const contextValue = useMemo(
-    () => ({
-      notes: state.notes,
-      isDarkMode: state.isDarkMode,
-      notesSummary,
-      addNote,
-      toggleComplete,
-      deleteNote,
-      clearAllNotes,
-      toggleDarkMode,
-    }),
-    [
-      state.notes,
-      state.isDarkMode,
-      notesSummary,
-      addNote,
-      toggleComplete,
-      deleteNote,
-      clearAllNotes,
-      toggleDarkMode,
-    ],
-  );
+  // Valeur unique injectée dans le Context.
+  const contextValue = {
+    notes: state.notes,
+    isDarkMode: state.isDarkMode,
+    notesSummary,
+    addNote,
+    toggleComplete,
+    deleteNote,
+    clearAllNotes,
+    toggleDarkMode,
+  };
 
+  // Rend le provider qui enveloppe les enfants de l'application.
   return (
     <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
   );
