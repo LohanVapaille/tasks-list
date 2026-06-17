@@ -1,94 +1,392 @@
-/* Style de l'entête principal */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* ─── Variables thème clair ─────────────────────────────────── */
+.app {
+  --bg-color: #f7f8fa;
+  --surface: #ffffff;
+  --surface-hover: #f0f1f5;
+  --text-primary: #1c1c2e;
+  --text-secondary: #6b7280;
+  --accent: #6c63ff;
+  --accent-light: #ede9ff;
+  --success: #22c55e;
+  --success-light: #dcfce7;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --border: #e5e7eb;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.09);
+  --radius: 12px;
+
+  font-family: "Inter", sans-serif;
+  width: 85%;
+  margin: auto;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  border-radius: 20px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  overflow: hidden;
+}
+
+/* ─── Thème sombre ──────────────────────────────────────────── */
+.app.dark {
+  --bg-color: #12121a;
+  --surface: #1e1e2d;
+  --surface-hover: #2a2a3d;
+  --text-primary: #f0f0f8;
+  --text-secondary: #9ca3af;
+  --accent: #8b85ff;
+  --accent-light: #2a2740;
+  --success: #34d399;
+  --success-light: #0d2e20;
+  --danger: #f87171;
+  --danger-light: #2e1111;
+  --border: #2d2d42;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Header ────────────────────────────────────────────────── */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background-color: var(--bleu-clair);
-  color: var(--text-color);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  padding: 24px 28px;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-/* Conteneur racine de l'application */
-/* Ici on définit les variables CSS du thème clair par défaut. */
-.app {
-  --bg-color: #ffffff;
-  --text-color: #333333;
-  --bleu-clair: #adf5ff;
-  --rouge: #f47474;
-  width: 85%;
-  margin: auto;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: all 0.3s ease;
+header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+header p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.header-stats {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
   border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-/* Variante sombre: on redéfinit uniquement les variables. */
-.app.dark {
-  --bg-color: #1a1a1a;
-  --text-color: #f0f0f0;
-  --bleu-clair: #03353b;
-  --rouge: #3f0606;
+.stat-chip.total {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.stat-chip.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+.app.dark .stat-chip.pending {
+  background: #2d2010;
+  color: #fbbf24;
+}
+.stat-chip.done {
+  background: var(--success-light);
+  color: var(--success);
 }
 
-.error {
-  color: #ff4d4d;
-  font-size: 0.8rem;
+.header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-/* Bouton de changement de thème */
 .btndarkmode {
-  background-color: transparent;
-  border: 2px solid var(--text-color);
-  color: var(--text-color);
-  padding: 10px 20px;
-  border-radius: 5px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 .btndarkmode:hover {
-  background-color: var(--text-color);
-  color: var(--bg-color);
+  background: var(--surface-hover);
+  border-color: var(--accent);
 }
 
-/* Zone de saisie + bouton d'ajout */
+.btn-clear {
+  background: var(--danger-light);
+  border: none;
+  color: var(--danger);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-clear:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* ─── Main ──────────────────────────────────────────────────── */
+main {
+  padding: 24px 28px;
+}
+
+/* ─── Formulaire d'ajout ────────────────────────────────────── */
 .note-form {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
-/* Champ de texte de la note */
 .note-form input {
-  padding: 10px;
-
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  flex: 1;
+  padding: 11px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  background: var(--surface);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
 }
 
-/* Bouton Ajouter */
+.note-form input::placeholder {
+  color: var(--text-secondary);
+}
+
+.note-form input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
 .note-form button {
-  padding: 10px 20px;
-  background-color: var(--bleu-clair);
+  padding: 11px 20px;
+  background: var(--accent);
   border: none;
-  color: var(--text-color);
-  border-radius: 5px;
+  color: #fff;
+  border-radius: 10px;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition:
+    opacity 0.2s,
+    transform 0.1s;
 }
 
-/* Bouton de suppression globale */
-.btn-clear {
-  padding: 10px 20px;
-  background-color: var(--rouge);
-  border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
+.note-form button:hover {
+  opacity: 0.88;
+}
+.note-form button:active {
+  transform: scale(0.97);
 }
 
-/* Feedback visuel au survol du bouton de suppression */
-.btn-clear:hover {
-  background-color: #ff4d4d;
+.error {
+  color: var(--danger);
+  font-size: 0.78rem;
+  margin-top: -18px;
+  margin-bottom: 16px;
+}
+
+/* ─── Grille de cartes ──────────────────────────────────────── */
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.empty-message {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 48px 0;
+  font-size: 0.95rem;
+}
+
+/* ─── Carte de tâche ────────────────────────────────────────── */
+.note-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.3s,
+    opacity 0.3s;
+  position: relative;
+}
+
+.note-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.note-card.completed {
+  border-left-color: var(--success);
+  opacity: 0.75;
+}
+
+.note-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* Checkbox custom */
+.task-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  position: relative;
+}
+
+.task-checkbox:checked {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.task-checkbox:checked::after {
+  content: "✓";
+  position: absolute;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.task-checkbox:hover:not(:checked) {
+  border-color: var(--accent);
+}
+
+.note-text {
+  flex: 1;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.note-card.completed .note-text {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+/* ─── Zone d'édition inline ─────────────────────────────────── */
+.edit-input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  background: var(--accent-light);
+  color: var(--text-primary);
+  outline: none;
+  resize: none;
+  line-height: 1.5;
+}
+
+/* ─── Actions de la carte ───────────────────────────────────── */
+.note-card-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+}
+
+.btn-icon:active {
+  transform: scale(0.95);
+}
+
+.btn-edit {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.btn-edit:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-save {
+  background: var(--success-light);
+  color: var(--success);
+}
+.btn-save:hover {
+  background: var(--success);
+  color: #fff;
+}
+
+.btn-cancel {
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+}
+.btn-cancel:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+
+.btn-delete {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+.btn-delete:hover {
+  background: var(--danger);
+  color: #fff;
 }
