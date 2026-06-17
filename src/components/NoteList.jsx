@@ -1,3 +1,4 @@
+// NoteList.jsx
 import { useState } from "react";
 import useAppContext from "../context/useAppContext";
 
@@ -13,17 +14,11 @@ const NoteCard = ({ note }) => {
     setIsEditing(false);
   };
 
-  const handleCancel = () => {
-    setDraft(note.text);
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSave();
-    }
-    if (e.key === "Escape") handleCancel();
+  // Formater la date en français pour l'affichage (ex: 17/06/2026)
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -34,23 +29,35 @@ const NoteCard = ({ note }) => {
           className="task-checkbox"
           checked={note.completed}
           onChange={() => toggleComplete(note.id)}
-          title={
-            note.completed ? "Marquer comme non faite" : "Marquer comme faite"
-          }
         />
 
-        {isEditing ? (
-          <textarea
-            className="edit-input"
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={handleKeyDown}
-            autoFocus
-            rows={2}
-          />
-        ) : (
-          <span className="note-text">{note.text}</span>
-        )}
+        <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+          {isEditing ? (
+            <textarea
+              className="edit-input"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              autoFocus
+              rows={2}
+            />
+          ) : (
+            <>
+              <span className="note-text">{note.text}</span>
+              {note.date && (
+                <span
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "var(--accent)",
+                    fontWeight: "600",
+                    marginTop: "4px",
+                  }}
+                >
+                  📅 Échéance : {formatDate(note.date)}
+                </span>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       <div className="note-card-actions">
@@ -59,7 +66,10 @@ const NoteCard = ({ note }) => {
             <button className="btn-icon btn-save" onClick={handleSave}>
               ✓ Enregistrer
             </button>
-            <button className="btn-icon btn-cancel" onClick={handleCancel}>
+            <button
+              className="btn-icon btn-cancel"
+              onClick={() => setIsEditing(false)}
+            >
               Annuler
             </button>
           </>
@@ -69,18 +79,12 @@ const NoteCard = ({ note }) => {
               className="btn-icon btn-edit"
               onClick={() => setIsEditing(true)}
               disabled={note.completed}
-              title={
-                note.completed
-                  ? "Impossible de modifier une tâche terminée"
-                  : "Modifier"
-              }
             >
               ✏️ Modifier
             </button>
             <button
               className="btn-icon btn-delete"
               onClick={() => deleteNote(note.id)}
-              title="Supprimer"
             >
               🗑 Supprimer
             </button>
@@ -96,15 +100,23 @@ const NoteList = () => {
 
   if (notes.length === 0) {
     return (
-      <p className="empty-message">
-        Aucune tâche pour l'instant — ajoutez-en une ci-dessus !
-      </p>
+      <p className="empty-message">Aucune tâche planifiée dans l'agenda.</p>
     );
   }
 
+  // TRI DE L'AGENDA : Du plus proche (le plus tôt) au plus lointain (le plus tard)
+  const sortedNotes = [...notes].sort((a, b) => {
+    // Si une tâche n'a pas de date, on la pousse à la fin
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+
+    // Comparaison des chaînes de caractères "YYYY-MM-DD"
+    return a.date.localeCompare(b.date);
+  });
+
   return (
     <div className="note-grid">
-      {notes.map((note) => (
+      {sortedNotes.map((note) => (
         <NoteCard key={note.id} note={note} />
       ))}
     </div>

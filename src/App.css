@@ -19,15 +19,19 @@
   --radius: 12px;
 
   font-family: "Inter", sans-serif;
-  width: 85%;
-  margin: auto;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+
   background-color: var(--bg-color);
   color: var(--text-primary);
-  border-radius: 20px;
+  border-radius: 0px; /* Supprimé pour l'effet plein écran */
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ─── Thème sombre ──────────────────────────────────────────── */
@@ -155,6 +159,8 @@ header p {
 /* ─── Main ──────────────────────────────────────────────────── */
 main {
   padding: 24px 28px;
+  flex: 1;
+  overflow-y: auto; /* Permet de scroller uniquement dans la liste si besoin */
 }
 
 /* ─── Formulaire d'ajout ────────────────────────────────────── */

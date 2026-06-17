@@ -1,25 +1,10 @@
-/* Styles globaux appliqués à toute la page */
-body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  background-color: rgb(165, 165, 167);
-}
-
-/* Zone dans laquelle React monte l'application */
+/* index.css */
+body,
 #root {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-}
-
-/* Padding de la zone principale sous l'entête */
-main {
-  padding: 20px;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #12121a;
 }
