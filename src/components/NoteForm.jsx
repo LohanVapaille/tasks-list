@@ -2,9 +2,19 @@
 import { useState, useRef, useEffect } from "react";
 import useAppContext from "../context/useAppContext";
 
+// Fonction utilitaire pour obtenir la date d'aujourd'hui au format "YYYY-MM-DD"
+const getTodayString = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 const NoteForm = () => {
   const [content, setContent] = useState("");
-  const [date, setDate] = useState(""); // Nouvel état pour la date
+  // Initialisation avec la date du jour par défaut
+  const [date, setDate] = useState(getTodayString());
   const [error, setError] = useState("");
   const inputRef = useRef(null);
   const { addNote } = useAppContext();
@@ -25,9 +35,10 @@ const NoteForm = () => {
       return;
     }
 
-    addNote(content.trim(), date); // Envoi du texte et de la date
+    addNote(content.trim(), date);
     setContent("");
-    setDate("");
+    // Réinitialise avec la date du jour après la soumission
+    setDate(getTodayString());
     setError("");
     inputRef.current.focus();
   };

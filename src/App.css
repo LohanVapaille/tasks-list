@@ -156,13 +156,43 @@ header p {
   color: #fff;
 }
 
-/* ─── Main ──────────────────────────────────────────────────── */
-main {
-  padding: 24px 28px;
-  flex: 1;
-  overflow-y: auto; /* Permet de scroller uniquement dans la liste si besoin */
+/* Layout global en deux colonnes */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 1.5rem;
 }
 
+/* Panneau gauche (tâches) */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+/* Panneau droit (calendrier) */
+.right-panel {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.right-panel iframe {
+  width: 100%;
+  border: none;
+  display: block;
+}
+
+/* Responsive : passage sur une colonne sur petits écrans */
+@media (max-width: 900px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+}
 /* ─── Formulaire d'ajout ────────────────────────────────────── */
 .note-form {
   display: flex;
