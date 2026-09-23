@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* ─── Variables thème clair ─────────────────────────────────── */
 .app {
   --bg-color: #f7f8fa;
@@ -9,6 +15,10 @@
   --text-secondary: #6b7280;
   --accent: #6c63ff;
   --accent-light: #ede9ff;
+  --accent-fast: #f59e0b;
+  --accent-fast-light: #fef3c7;
+  --accent-long: #6c63ff;
+  --accent-long-light: #ede9ff;
   --success: #22c55e;
   --success-light: #dcfce7;
   --danger: #ef4444;
@@ -25,13 +35,13 @@
 
   background-color: var(--bg-color);
   color: var(--text-primary);
-  border-radius: 0px; /* Supprimé pour l'effet plein écran */
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 /* ─── Thème sombre ──────────────────────────────────────────── */
@@ -43,6 +53,10 @@
   --text-secondary: #9ca3af;
   --accent: #8b85ff;
   --accent-light: #2a2740;
+  --accent-fast: #fbbf24;
+  --accent-fast-light: #2d2010;
+  --accent-long: #8b85ff;
+  --accent-long-light: #2a2740;
   --success: #34d399;
   --success-light: #0d2e20;
   --danger: #f87171;
@@ -57,11 +71,12 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 28px;
+  padding: 20px 28px;
   background-color: var(--surface);
   border-bottom: 1px solid var(--border);
   gap: 16px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 header h1 {
@@ -89,7 +104,7 @@ header p {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -156,29 +171,126 @@ header p {
   color: #fff;
 }
 
-/* Layout global en deux colonnes */
+/* ─── Layout principal ──────────────────────────────────────── */
 .main-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  align-items: start;
-  margin-top: 1.5rem;
-}
-
-/* Panneau gauche (tâches) */
-.left-panel {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 0 1rem;
+  gap: 1.75rem;
+  padding: 1.5rem 1.75rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
-/* Panneau droit (calendrier) */
+/* Ligne contenant les deux colonnes de tâches */
+.tasks-row {
+  display: flex;
+  gap: 1.75rem;
+  height: 85vh;
+  min-height: 73vh;
+}
+
+/* Chaque colonne (fast / long) */
+.task-column {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.task-column-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.task-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.task-column--fast .task-icon {
+  background: var(--accent-fast-light);
+}
+.task-column--long .task-icon {
+  background: var(--accent-long-light);
+}
+
+.task-column-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.task-column .note-form {
+  flex-shrink: 0;
+}
+
+.task-column--fast .note-form button {
+  background: var(--accent-fast);
+}
+.task-column--long .note-form button {
+  background: var(--accent-long);
+}
+
+.task-column--fast .note-form input:focus {
+  border-color: var(--accent-fast);
+  box-shadow: 0 0 0 3px var(--accent-fast-light);
+}
+.task-column--long .note-form input:focus {
+  border-color: var(--accent-long);
+  box-shadow: 0 0 0 3px var(--accent-long-light);
+}
+
+/* Barre verticale entre les deux colonnes */
+.tasks-divider-vertical {
+  width: 1px;
+  background-color: var(--border);
+  flex-shrink: 0;
+}
+
+/* Liste scrollable, prend tout l'espace restant de la colonne */
+.scrollable-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-top: 4px;
+}
+
+/* ─── Agenda ────────────────────────────────────────────────── */
+.calendar-section {
+  flex-shrink: 0;
+}
+
+.calendar-title {
+  margin: 0 0 10px 2px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 .right-panel {
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
 }
 
 .right-panel iframe {
@@ -187,17 +299,28 @@ header p {
   display: block;
 }
 
-/* Responsive : passage sur une colonne sur petits écrans */
+/* Responsive : colonnes empilées sur petits écrans */
 @media (max-width: 900px) {
-  .main-layout {
-    grid-template-columns: 1fr;
+  .tasks-row {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .task-column {
+    height: 50vh;
+  }
+
+  .tasks-divider-vertical {
+    width: 100%;
+    height: 1px;
   }
 }
+
 /* ─── Formulaire d'ajout ────────────────────────────────────── */
 .note-form {
   display: flex;
   gap: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .note-form input {
@@ -217,14 +340,8 @@ header p {
   color: var(--text-secondary);
 }
 
-.note-form input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-light);
-}
-
 .note-form button {
   padding: 11px 20px;
-  background: var(--accent);
   border: none;
   color: #fff;
   border-radius: 10px;
@@ -247,15 +364,15 @@ header p {
 .error {
   color: var(--danger);
   font-size: 0.78rem;
-  margin-top: -18px;
-  margin-bottom: 16px;
+  margin-top: -10px;
+  margin-bottom: 12px;
 }
 
 /* ─── Grille de cartes ──────────────────────────────────────── */
 .note-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
 }
 
 .empty-message {
@@ -283,6 +400,13 @@ header p {
   position: relative;
 }
 
+.note-card--fast {
+  border-left-color: var(--accent-fast);
+}
+.note-card--long {
+  border-left-color: var(--accent-long);
+}
+
 .note-card:hover {
   box-shadow: var(--shadow-md);
 }
@@ -298,7 +422,6 @@ header p {
   gap: 12px;
 }
 
-/* Checkbox custom */
 .task-checkbox {
   appearance: none;
   -webkit-appearance: none;
@@ -342,6 +465,14 @@ header p {
   line-height: 1.5;
   color: var(--text-primary);
   word-break: break-word;
+}
+
+.note-date {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 4px;
 }
 
 .note-card.completed .note-text {

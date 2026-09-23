@@ -1,4 +1,3 @@
-// NoteList.jsx
 import { useState } from "react";
 import useAppContext from "../context/useAppContext";
 
@@ -14,15 +13,18 @@ const NoteCard = ({ note }) => {
     setIsEditing(false);
   };
 
-  // Formater la date en français pour l'affichage (ex: 17/06/2026)
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const [year, month, day] = dateString.split("-");
     return `${day}/${month}/${year}`;
   };
 
+  const categoryClass = `note-card--${note.category || "fast"}`;
+
   return (
-    <div className={`note-card ${note.completed ? "completed" : ""}`}>
+    <div
+      className={`note-card ${categoryClass} ${note.completed ? "completed" : ""}`}
+    >
       <div className="note-card-top">
         <input
           type="checkbox"
@@ -44,16 +46,7 @@ const NoteCard = ({ note }) => {
             <>
               <span className="note-text">{note.text}</span>
               {note.date && (
-                <span
-                  style={{
-                    fontSize: "0.75rem",
-                    color: "var(--accent)",
-                    fontWeight: "600",
-                    marginTop: "4px",
-                  }}
-                >
-                  📅 Échéance : {formatDate(note.date)}
-                </span>
+                <span className="note-date">📅 {formatDate(note.date)}</span>
               )}
             </>
           )}
@@ -64,13 +57,13 @@ const NoteCard = ({ note }) => {
         {isEditing ? (
           <>
             <button className="btn-icon btn-save" onClick={handleSave}>
-              ✓ Enregistrer
+              ✓
             </button>
             <button
               className="btn-icon btn-cancel"
               onClick={() => setIsEditing(false)}
             >
-              Annuler
+              ✕
             </button>
           </>
         ) : (
@@ -80,13 +73,13 @@ const NoteCard = ({ note }) => {
               onClick={() => setIsEditing(true)}
               disabled={note.completed}
             >
-              ✏️ Modifier
+              ✏️
             </button>
             <button
               className="btn-icon btn-delete"
               onClick={() => deleteNote(note.id)}
             >
-              🗑 Supprimer
+              🗑
             </button>
           </>
         )}
@@ -95,22 +88,20 @@ const NoteCard = ({ note }) => {
   );
 };
 
-const NoteList = () => {
+const NoteList = ({ category }) => {
   const { notes } = useAppContext();
 
-  if (notes.length === 0) {
-    return (
-      <p className="empty-message">Aucune tâche planifiée dans l'agenda.</p>
-    );
+  const filteredNotes = notes.filter(
+    (note) => (note.category || "fast") === category,
+  );
+
+  if (filteredNotes.length === 0) {
+    return <p className="empty-message">Aucune tâche ici.</p>;
   }
 
-  // TRI DE L'AGENDA : Du plus proche (le plus tôt) au plus lointain (le plus tard)
-  const sortedNotes = [...notes].sort((a, b) => {
-    // Si une tâche n'a pas de date, on la pousse à la fin
+  const sortedNotes = [...filteredNotes].sort((a, b) => {
     if (!a.date) return 1;
     if (!b.date) return -1;
-
-    // Comparaison des chaînes de caractères "YYYY-MM-DD"
     return a.date.localeCompare(b.date);
   });
 

@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import useAppContext from "../context/useAppContext";
 
-// Fonction utilitaire pour obtenir la date d'aujourd'hui au format "YYYY-MM-DD"
 const getTodayString = () => {
   const today = new Date();
   const year = today.getFullYear();
@@ -11,17 +10,12 @@ const getTodayString = () => {
   return `${year}-${month}-${day}`;
 };
 
-const NoteForm = () => {
+const NoteForm = ({ category }) => {
   const [content, setContent] = useState("");
-  // Initialisation avec la date du jour par défaut
   const [date, setDate] = useState(getTodayString());
   const [error, setError] = useState("");
   const inputRef = useRef(null);
   const { addNote } = useAppContext();
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,16 +25,14 @@ const NoteForm = () => {
       return;
     }
     if (!date) {
-      setError("Veuillez sélectionner une date pour l'agenda.");
+      setError("Veuillez sélectionner une date.");
       return;
     }
 
-    addNote(content.trim(), date);
+    addNote(content.trim(), date, category);
     setContent("");
-    // Réinitialise avec la date du jour après la soumission
     setDate(getTodayString());
     setError("");
-    inputRef.current.focus();
   };
 
   return (
@@ -54,21 +46,25 @@ const NoteForm = () => {
             setContent(e.target.value);
             if (error) setError("");
           }}
-          placeholder="Nouvelle tâche..."
+          placeholder={
+            category === "fast"
+              ? "Nouvelle tâche rapide..."
+              : "Nouvelle tâche long terme..."
+          }
         />
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           style={{
-            padding: "11px",
+            padding: "8px",
             borderRadius: "10px",
             border: "1.5px solid var(--border)",
             background: "var(--surface)",
             color: "var(--text-primary)",
           }}
         />
-        <button type="submit">+ Ajouter</button>
+        <button type="submit">+</button>
       </form>
       {error && <p className="error">{error}</p>}
     </>

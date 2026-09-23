@@ -13,15 +13,14 @@ const createInitialState = () => {
 
 const appReducer = (state, action) => {
   switch (action.type) {
-    // Trouve le case "ADD_NOTE" dans ton appReducer et remplace-le :
     case "ADD_NOTE": {
       const newNote = {
         id: Date.now(),
         text: action.payload.text,
-        date: action.payload.date, // Ajout de la date cible
+        date: action.payload.date,
+        category: action.payload.category || "fast", // <-- le fix
         completed: false,
       };
-      // Optionnel : tu peux laisser le tri se faire au rendu ou directement à l'insertion
       return { ...state, notes: [newNote, ...state.notes] };
     }
 
@@ -74,8 +73,8 @@ const AppProvider = ({ children }) => {
     createInitialState,
   );
 
-  const addNote = (text, date) =>
-    dispatch({ type: "ADD_NOTE", payload: { text, date } });
+  const addNote = (text, date, category) =>
+    dispatch({ type: "ADD_NOTE", payload: { text, date, category } });
   const toggleComplete = (id) => dispatch({ type: "TOGGLE_NOTE", payload: id });
   const editNote = (id, text) =>
     dispatch({ type: "EDIT_NOTE", payload: { id, text } });
