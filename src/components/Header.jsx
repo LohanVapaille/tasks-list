@@ -1,6 +1,6 @@
 import useAppContext from "../context/useAppContext";
 
-const Header = () => {
+const Header = ({ todayOnly, onToggleTodayOnly }) => {
   const { isDarkMode, toggleDarkMode, clearAllNotes, notesSummary } =
     useAppContext();
 
@@ -25,6 +25,13 @@ const Header = () => {
       </div>
 
       <div className="header-actions">
+        <button
+          className={`btn-today-filter${todayOnly ? " active" : ""}`}
+          onClick={onToggleTodayOnly}
+          aria-pressed={todayOnly}
+        >
+          Today Only{todayOnly ? " ✓" : ""}
+        </button>
         <button className="btndarkmode" onClick={toggleDarkMode}>
           {isDarkMode ? "☀️ Mode clair" : "🌙 Mode sombre"}
         </button>

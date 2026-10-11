@@ -88,11 +88,21 @@ const NoteCard = ({ note }) => {
   );
 };
 
-const NoteList = ({ category }) => {
+const getTodayString = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const NoteList = ({ category, todayOnly = false }) => {
   const { notes } = useAppContext();
 
   const filteredNotes = notes.filter(
-    (note) => (note.category || "fast") === category,
+    (note) =>
+      (note.category || "fast") === category &&
+      (!todayOnly || note.date === getTodayString()),
   );
 
   if (filteredNotes.length === 0) {

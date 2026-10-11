@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
@@ -10,6 +10,7 @@ const STORAGE_KEY = "mes-notes";
 
 function AppContent() {
   const { notes, isDarkMode } = useAppContext();
+  const [todayOnly, setTodayOnly] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
@@ -17,7 +18,10 @@ function AppContent() {
 
   return (
     <div className={`app ${isDarkMode ? "dark" : "light"}`}>
-      <Header />
+      <Header
+        todayOnly={todayOnly}
+        onToggleTodayOnly={() => setTodayOnly((active) => !active)}
+      />
 
       <main className="main-layout">
         <section className="tasks-row">
@@ -28,7 +32,7 @@ function AppContent() {
             </div>
             <NoteForm category="fast" />
             <div className="scrollable-list">
-              <NoteList category="fast" />
+              <NoteList category="fast" todayOnly={todayOnly} />
             </div>
           </div>
 
@@ -41,7 +45,7 @@ function AppContent() {
             </div>
             <NoteForm category="long" />
             <div className="scrollable-list">
-              <NoteList category="long" />
+              <NoteList category="long" todayOnly={todayOnly} />
             </div>
           </div>
         </section>
