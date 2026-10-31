@@ -7,13 +7,15 @@ Application de liste de tâches (notes) avec:
 - suppression,
 - vidage complet,
 - mode clair/sombre,
-- sauvegarde locale via `localStorage`.
+- compte utilisateur et synchronisation entre appareils via Supabase.
 
 ## Structure utile
 
 - `src/main.jsx` : point d'entrée React (montage dans `#root`).
-- `src/App.jsx` : compose l'app et persiste les notes dans `localStorage`.
-- `src/context/AppContext.jsx` : état global (`useReducer`) + actions + statistiques.
+- `src/App.jsx` : compose l'app et affiche la connexion si besoin.
+- `src/context/AppContext.jsx` : état global (`useReducer`) + actions + statistiques + synchro Supabase.
+- `src/lib/supabaseClient.js` : connexion au projet Supabase.
+- `supabase/schema.sql` : table `notes` et règles d'accès, à exécuter une fois dans Supabase.
 - `src/context/useAppContext.js` : hook custom pour lire le context facilement.
 - `src/components/` : UI (`Header`, `NoteForm`, `NoteList`).
 - `src/App.css` et `src/index.css` : styles globaux et thème.
@@ -26,7 +28,7 @@ Application de liste de tâches (notes) avec:
 2. Les composants appellent une action du context (`addNote`, `toggleComplete`, etc.).
 3. Le reducer met à jour l'état global.
 4. React rerender l'UI avec le nouvel état.
-5. `App.jsx` sauvegarde automatiquement les notes dans `localStorage`.
+5. Le changement est envoyé à Supabase, puis les autres appareils relisent la liste en temps réel.
 
 ## Scripts npm
 

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import AuthForm from "./components/AuthForm";
 import Header from "./components/Header";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
@@ -6,15 +7,33 @@ import AppProvider from "./context/AppContext";
 import useAppContext from "./context/useAppContext";
 import "./App.css";
 
-const STORAGE_KEY = "mes-notes";
-
 function AppContent() {
-  const { notes, isDarkMode } = useAppContext();
+  const { notes, isDarkMode, session, syncError } = useAppContext();
   const [todayOnly, setTodayOnly] = useState(false);
+  const [mobileTab, setMobileTab] = useState("fast");
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-  }, [notes]);
+  const pendingCount = (category) =>
+    notes.filter(
+      (note) => !note.completed && (note.category || "fast") === category,
+    ).length;
+  const hiddenOnMobile = (tab) => (mobileTab === tab ? "" : "hidden-mobile");
+  const mobileTabs = [
+    { id: "fast", label: `⚡ Rapides (${pendingCount("fast")})` },
+    { id: "long", label: `📅 Long terme (${pendingCount("long")})` },
+    { id: "agenda", label: "🗓️ Agenda" },
+  ];
+
+  if (session === undefined) {
+    return <div className={`app ${isDarkMode ? "dark" : "light"}`} />;
+  }
+
+  if (!session) {
+    return (
+      <div className={`app ${isDarkMode ? "dark" : "light"}`}>
+        <AuthForm />
+      </div>
+    );
+  }
 
   return (
     <div className={`app ${isDarkMode ? "dark" : "light"}`}>
@@ -23,9 +42,28 @@ function AppContent() {
         onToggleTodayOnly={() => setTodayOnly((active) => !active)}
       />
 
+      {syncError && (
+        <p className="sync-error" role="alert">
+          {syncError}
+        </p>
+      )}
+
+      <nav className="mobile-tabs" aria-label="Sections">
+        {mobileTabs.map((tab) => (
+          <button
+            key={tab.id}
+            className={`mobile-tab${mobileTab === tab.id ? " active" : ""}`}
+            aria-pressed={mobileTab === tab.id}
+            onClick={() => setMobileTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </nav>
+
       <main className="main-layout">
-        <section className="tasks-row">
-          <div className="task-column task-column--fast">
+        <section className={`tasks-row ${mobileTab === "agenda" ? "hidden-mobile" : ""}`}>
+          <div className={`task-column task-column--fast ${hiddenOnMobile("fast")}`}>
             <div className="task-column-header">
               <span className="task-icon">⚡</span>
               <h2>Tâches Rapides</h2>
@@ -38,7 +76,7 @@ function AppContent() {
 
           <div className="tasks-divider-vertical" />
 
-          <div className="task-column task-column--long">
+          <div className={`task-column task-column--long ${hiddenOnMobile("long")}`}>
             <div className="task-column-header">
               <span className="task-icon">📅</span>
               <h2>Tâches Long Terme</h2>
@@ -50,7 +88,7 @@ function AppContent() {
           </div>
         </section>
 
-        <section className="calendar-section">
+        <section className={`calendar-section ${hiddenOnMobile("agenda")}`}>
           <h3 className="calendar-title">🗓️ Agenda</h3>
           <div className="right-panel">
             <iframe

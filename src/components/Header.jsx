@@ -1,8 +1,14 @@
 import useAppContext from "../context/useAppContext";
 
 const Header = ({ todayOnly, onToggleTodayOnly }) => {
-  const { isDarkMode, toggleDarkMode, clearAllNotes, notesSummary } =
+  const { isDarkMode, toggleDarkMode, clearAllNotes, notesSummary, signOut } =
     useAppContext();
+
+  const handleClearAll = () => {
+    if (window.confirm("Supprimer toutes tes tâches sur tous tes appareils ?")) {
+      clearAllNotes();
+    }
+  };
 
   return (
     <header>
@@ -36,8 +42,12 @@ const Header = ({ todayOnly, onToggleTodayOnly }) => {
           {isDarkMode ? "☀️ Mode clair" : "🌙 Mode sombre"}
         </button>
 
-        <button onClick={clearAllNotes} className="btn-clear">
+        <button onClick={handleClearAll} className="btn-clear">
           Tout supprimer
+        </button>
+
+        <button onClick={signOut} className="btndarkmode">
+          Se déconnecter
         </button>
       </div>
     </header>

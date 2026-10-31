@@ -5,14 +5,15 @@
   "type": "module",
   "homepage": "https://lohanvapaille.github.io/tasks-list/",
   "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "lint": "eslint .",
-  "preview": "vite preview",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
-},
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
